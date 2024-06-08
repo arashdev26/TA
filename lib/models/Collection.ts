@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const collectionSchema = new mongoose.Schema({
   title: {
@@ -14,8 +14,8 @@ const collectionSchema = new mongoose.Schema({
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-    },
+      ref: "Product",
+    }
   ],
   createdAt: {
     type: Date,
@@ -24,10 +24,9 @@ const collectionSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  },
+  }
 })
 
-const Collection =
-  mongoose.models.Collection || mongoose.model('Collection', collectionSchema)
+const Collection =mongoose.models.Collection || mongoose.model("Collection", collectionSchema);
 
-export default Collection
+export default Collection;

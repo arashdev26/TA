@@ -1,19 +1,20 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import '../globals.css'
-import { ClerkProvider } from '@clerk/nextjs'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "../globals.css";
 
-const inter = Inter({ subsets: ['latin'] })
+import { ClerkProvider } from "@clerk/nextjs";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Trust Admin Auth',
-  description: 'Admin dashboard to manage Trust data',
-}
+  title: "Borcelle - Admin Auth",
+  description: "Admin dashboard to manage Borcelle's data",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <ClerkProvider>
@@ -21,5 +22,5 @@ export default function RootLayout({
         <body className={inter.className}>{children}</body>
       </html>
     </ClerkProvider>
-  )
+  );
 }

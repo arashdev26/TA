@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Input } from '../ui/input'
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
-import { X } from 'lucide-react'
+import { Input } from "../ui/input";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { X } from "lucide-react";
 
 interface MultiTextProps {
-  placeholder: string
-  value: string[]
-  onChange: (value: string) => void
-  onRemove: (value: string) => void
+  placeholder: string;
+  value: string[];
+  onChange: (value: string) => void;
+  onRemove: (value: string) => void;
 }
 
 const MultiText: React.FC<MultiTextProps> = ({
@@ -20,12 +20,12 @@ const MultiText: React.FC<MultiTextProps> = ({
   onChange,
   onRemove,
 }) => {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState("");
 
   const addValue = (item: string) => {
-    onChange(item)
-    setInputValue('')
-  }
+    onChange(item);
+    setInputValue("");
+  };
 
   return (
     <>
@@ -34,19 +34,16 @@ const MultiText: React.FC<MultiTextProps> = ({
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault()
-            addValue(inputValue)
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addValue(inputValue);
           }
         }}
       />
 
       <div className="flex gap-1 flex-wrap mt-4">
         {value.map((item, index) => (
-          <Badge
-            key={index}
-            className="bg-grey-1 text-white"
-          >
+          <Badge key={index} className="bg-grey-1 text-white">
             {item}
             <button
               className="ml-1 rounded-full outline-none hover:bg-red-1"
@@ -59,7 +56,7 @@ const MultiText: React.FC<MultiTextProps> = ({
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default MultiText
+export default MultiText;

@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { useRouter } from 'next/navigation'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
 
-import { Separator } from '../ui/separator'
-import { Button } from '@/components/ui/button'
+import { Separator } from "../ui/separator";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,91 +14,81 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '../ui/textarea'
-import ImageUpload from '../custom ui/ImageUpload'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
-import Delete from '../custom ui/Delete'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "../ui/textarea";
+import ImageUpload from "../custom ui/ImageUpload";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import Delete from "../custom ui/Delete";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
   description: z.string().min(2).max(500).trim(),
   image: z.string(),
-})
+});
 
 interface CollectionFormProps {
-  initialData?: CollectionType | null //Must have "?" to make it optional
+  initialData?: CollectionType | null; //Must have "?" to make it optional
 }
 
 const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
       ? initialData
       : {
-          title: '',
-          description: '',
-          image: '',
+          title: "",
+          description: "",
+          image: "",
         },
-  })
+  });
 
-  const handleKeyPress = (
-    e:
-      | React.KeyboardEvent<HTMLInputElement>
-      | React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
     }
   }
-
+  
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const url = initialData
         ? `/api/collections/${initialData._id}`
-        : '/api/collections'
+        : "/api/collections";
       const res = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(values),
-      })
+      });
       if (res.ok) {
-        setLoading(false)
-        toast.success(`Collection ${initialData ? 'updated' : 'created'}`)
-        window.location.href = '/collections'
-        router.push('/collections')
+        setLoading(false);
+        toast.success(`Collection ${initialData ? "updated" : "created"}`);
+        window.location.href = "/collections";
+        router.push("/collections");
       }
     } catch (err) {
-      console.log('[collections_POST]', err)
-      toast.error('Something went wrong! Please try again.')
+      console.log("[collections_POST]", err);
+      toast.error("Something went wrong! Please try again.");
     }
-  }
+  };
 
   return (
     <div className="p-10">
       {initialData ? (
         <div className="flex items-center justify-between">
           <p className="text-heading2-bold">Edit Collection</p>
-          <Delete
-            id={initialData._id}
-            item="collection"
-          />
+          <Delete id={initialData._id} item="collection" />
         </div>
       ) : (
         <p className="text-heading2-bold">Create Collection</p>
       )}
       <Separator className="bg-grey-1 mt-4 mb-7" />
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             name="title"
@@ -106,11 +96,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Title"
-                    {...field}
-                    onKeyDown={handleKeyPress}
-                  />
+                  <Input placeholder="Title" {...field} onKeyDown={handleKeyPress} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,12 +109,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Description"
-                    {...field}
-                    rows={5}
-                    onKeyDown={handleKeyPress}
-                  />
+                  <Textarea placeholder="Description" {...field} rows={5} onKeyDown={handleKeyPress} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,7 +125,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                   <ImageUpload
                     value={field.value ? [field.value] : []}
                     onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
+                    onRemove={() => field.onChange("")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -152,15 +133,12 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
             )}
           />
           <div className="flex gap-10">
-            <Button
-              type="submit"
-              className="bg-blue-1 text-white"
-            >
+            <Button type="submit" className="bg-blue-1 text-white">
               Submit
             </Button>
             <Button
               type="button"
-              onClick={() => router.push('/collections')}
+              onClick={() => router.push("/collections")}
               className="bg-blue-1 text-white"
             >
               Discard
@@ -169,7 +147,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         </form>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default CollectionForm
+export default CollectionForm;
